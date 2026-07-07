@@ -1,0 +1,16 @@
+# devops scaffold (role=caller): consumer repo の呼出スタブ。
+# 統制 repo の reusable workflow を version pin して呼ぶ。version 一斉追従は workflow_ref_bump.py。
+# @v1 は major 追従（後方互換更新を自動取得）。改竄耐性が要る統制は full SHA pin に置換する（skill §2）。
+name: ci
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  ci:
+    uses: ysano/fleet-demo-09/.github/workflows/reusable-ci.yml@v1
+    with:
+      python-version: "3.12"
+    secrets:
+      EXTRA_TOKEN: ${{ secrets.EXTRA_TOKEN }}   # 明示 mapping（inherit しない）
